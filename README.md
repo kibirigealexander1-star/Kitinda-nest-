@@ -1,2 +1,2 @@
-# Kitinda-nest-
+npm run install-all# Kitinda-nest-
 Airbnb 
