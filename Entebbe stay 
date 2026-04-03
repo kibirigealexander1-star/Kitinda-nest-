@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>StayLocal · Book unique spaces</title>
+  <!-- Google Fonts & simple reset -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f7f7f7;
+      color: #1e1e2a;
+      line-height: 1.4;
+    }
+
+    /* container utility */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* header & nav */
+    .header {
+      background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FF5A5F, #FF385C);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .logo i {
+      color: #FF385C;
+      background: none;
+      -webkit-background-clip: unset;
+      margin-right: 6px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #5e5e6b;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    .nav-links a:hover {
+      color: #FF385C;
+    }
+    .user-icon {
+      background: #f0f0f0;
+      border-radius: 30px;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    /* hero search */
+    .hero {
+      background: linear-gradient(105deg, #ffffff 0%, #fef1f0 100%);
+      padding: 40px 0 50px;
+      border-bottom: 1px solid #ffe4e2;
+    }
+    .search-card {
+      background: white;
+      border-radius: 48px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+      padding: 12px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .filter-group {
+      flex: 1;
+      min-width: 140px;
+    }
+    .filter-group label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #71717a;
+      display: block;
+    }
+    .filter-group input, .filter-group select {
+      width: 100%;
+      border: none;
+      padding: 8px 0 4px;
+      font-size: 1rem;
+      font-weight: 500;
+      outline: none;
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+    }
+    .search-btn {
+      background: #FF385C;
+      border: none;
+      color: white;
+      padding: 12px 28px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+    }
+    .search-btn:hover {
+      background: #e31c4b;
+      transform: scale(0.97);
+    }
+
+    /* filters chips */
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 32px 0 20px;
+      justify-content: center;
+    }
+    .chip {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chip.active, .chip:hover {
+      background: #FF385C;
+      border-color: #FF385C;
+      color: white;
+    }
+
+    /* property grid */
+    .listings-title {
+      font-size: 1.7rem;
+      margin: 30px 0 16px;
+      font-weight: 600;
+    }
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 28px;
+      padding-bottom: 60px;
+    }
+    .property-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      transition: 0.25s ease;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+      border: 1px solid #f0f0f0;
+    }
+    .property-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15);
+    }
+    .card-img {
+      height: 220px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .price-badge {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .card-info {
+      padding: 16px;
+    }
+    .card-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+    .card-location {
+      color: #6c757d;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .rating i {
+      color: #FFB800;
+    }
+    .book-sim-btn {
+      margin-top: 12px;
+      background: #f0f0f0;
+      border: none;
+      width: 100%;
+      padding: 10px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+    .book-sim-btn:hover {
+      background: #FF385C;
+      color: white;
+    }
+
+    /* modal for booking simulation */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      max-width: 420px;
+      width: 90%;
+      padding: 28px;
+      border-radius: 28px;
+      text-align: center;
+      animation: fadeUp 0.2s ease;
+    }
+    @keyframes fadeUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-content i.fa-check-circle {
+      color: #10b981;
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+    .modal button {
+      background: #FF385C;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 40px;
+      color: white;
+      font-weight: 600;
+      margin-top: 20px;
+      width: 100%;
+      cursor: pointer;
+    }
+    .footer {
+      text-align: center;
+      padding: 30px;
+      border-top: 1px solid #eaeaea;
+      color: #6c757d;
+      font-size: 0.85rem;
+    }
+    @media (max-width: 700px) {
+      .search-card { flex-direction: column; align-items: stretch; border-radius: 32px; }
+      .search-btn { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container">
+    <div class="nav-bar">
+      <div class="logo">
+        <i class="fas fa-home"></i> StayLocal
+      </div>
+      <div class="nav-links">
+        <a href="#">Explore</a>
+        <a href="#">Host your space</a>
+        <div class="user-icon">
+          <i class="fas fa-bars"></i>
+          <i class="fas fa-user-circle"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="search-card">
+      <div class="filter-group">
+        <label>📍 DESTINATION</label>
+        <input type="text" id="locationInput" placeholder="Anywhere" value="Downtown">
+      </div>
+      <div class="filter-group">
+        <label>📅 CHECK IN</label>
+        <input type="date" id="checkinInput" value="2026-05-15">
+      </div>
+      <div class="filter-group">
+        <label>📅 CHECK OUT</label>
+        <input type="date" id="checkoutInput" value="2026-05-18">
+      </div>
+      <div class="filter-group">
+        <label>👥 GUESTS</label>
+        <select id="guestsSelect">
+          <option value="1">1 guest</option>
+          <option value="2" selected>2 guests</option>
+          <option value="3">3 guests</option>
+          <option value="4">4 guests</option>
+        </select>
+      </div>
+      <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> Search</button>
+    </div>
+
+    <!-- category chips (quick filter) -->
+    <div class="filters-row" id="chipContainer">
+      <div class="chip active" data-type="all">✨ All stays</div>
+      <div class="chip" data-type="cabin">🏔️ Cabins</div>
+      <div class="chip" data-type="beach">🌊 Beachfront</div>
+      <div class="chip" data-type="villa">🏡 Luxury villas</div>
+      <div class="chip" data-type="downtown">🏙️ Downtown lofts</div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="listings-title">
+    <i class="fas fa-map-marker-alt" style="color:#FF385C;"></i> Stays you'll love
+  </div>
+  <div id="propertyGrid" class="property-grid">
+    <!-- dynamic cards will be injected here -->
+  </div>
+</div>
+
+<!-- Booking simulation modal -->
+<div id="bookingModal" class="modal">
+  <div class="modal-content">
+    <i class="fas fa-check-circle"></i>
+    <h3>✨ Almost there!</h3>
+    <p id="modalMessage">You simulated a booking for <strong></strong></p>
+    <p style="margin-top: 12px; font-size: 0.85rem; color: gray;">This is a demo — no payment taken.<br>In a real app, you'd proceed to checkout.</p>
+    <button id="closeModalBtn">Explore more stays →</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>© 2025 StayLocal — Demo Airbnb-style app for business concept. All rights reserved.</p>
+</footer>
+
+<script>
+  // ---------- PROPERTIES DATASET ----------
+  const properties = [
+    {
+      id: 1,
+      title: "Cozy Downtown Loft with Skyline View",
+      location: "Downtown, Metropolis",
+      pricePerNight: 129,
+      rating: 4.92,
+      image: "https://picsum.photos/id/104/400/260", // modern loft vibe
+      type: "downtown",
+      maxGuests: 4
+    },
+    {
+      id: 2,
+      title: "Secluded Cedar Cabin · Hot tub",
+      location: "Redwood Forest, CA",
+      pricePerNight: 215,
+      rating: 4.98,
+      image: "https://picsum.photos/id/150/400/260",
+      type: "cabin",
+      maxGuests: 5
+    },
+    {
+      id: 3,
+      title: "Luxury Beachfront Villa",
+      location: "Malibu Coast",
+      pricePerNight: 489,
+      rating: 4.87,
+      image: "https://picsum.photos/id/96/400/260",
+      type: "beach",
+      maxGuests: 6
+    },
+    {
+      id: 4,
+      title: "Modern Penthouse with Rooftop",
+      location: "Financial District",
+      pricePerNight: 349,
+      rating: 4.79,
+      image: "https://picsum.photos/id/106/400/260",
+      type: "downtown",
+      maxGuests: 4
+    },
+    {
+      id: 5,
+      title: "Vineyard Estate & Private Pool",
+      location: "Sonoma Valley",
+      pricePerNight: 595,
+      rating: 4.99,
+      image: "https://picsum.photos/id/28/400/260",
+      type: "villa",
+      maxGuests: 8
+    },
+    {
+      id: 6,
+      title: "Ocean Breeze Bungalow",
+      location: "Santa Monica",
+      pricePerNight: 275,
+      rating: 4.85,
+      image: "https://picsum.photos/id/15/400/260",
+      type: "beach",
+      maxGuests: 4
+    },
+    {
+      id: 7,
+      title: "Mountain Modern A-Frame",
+      location: "Aspen Grove",
+      pricePerNight: 310,
+      rating: 4.94,
+      image: "https://picsum.photos/id/29/400/260",
+      type: "cabin",
+      maxGuests: 5
+    },
+    {
+      id: 8,
+      title: "Art Deco Villa · Garden Terrace",
+      location: "Coral Gables",
+      pricePerNight: 430,
+      rating: 4.88,
+      image: "https://picsum.photos/id/31/400/260",
+      type: "villa",
+      maxGuests: 7
+    }
+  ];
+
+  // global state
+  let currentFilterType = "all";
+  let currentLocationQuery = "Downtown";
+  let currentGuests = 2;
+
+  // DOM elements
+  const gridContainer = document.getElementById("propertyGrid");
+  const locationInput = document.getElementById("locationInput");
+  const guestsSelect = document.getElementById("guestsSelect");
+  const searchBtn = document.getElementById("searchBtn");
+  const chips = document.querySelectorAll(".chip");
+  const modal = document.getElementById("bookingModal");
+  const modalMessageSpan = document.getElementById("modalMessage").querySelector("strong");
+  const closeModalBtn = document.getElementById("closeModalBtn");
+
+  // Helper: filter properties based on type, location (simple text match) and guest capacity
+  function filterProperties() {
+    let filtered = [...properties];
+    
+    // type filter
+    if (currentFilterType !== "all") {
+      filtered = filtered.filter(prop => prop.type === currentFilterType);
+    }
+    
+    // location filter (case insensitive partial match)
+    if (currentLocationQuery && currentLocationQuery.trim() !== "") {
+      const queryLower = currentLocationQuery.trim().toLowerCase();
+      filtered = filtered.filter(prop => prop.location.toLowerCase().includes(queryLower));
+    }
+    
+    // guest capacity: only show properties that can accommodate selected guests
+    filtered = filtered.filter(prop => prop.maxGuests >= currentGuests);
+    
+    return filtered;
+  }
+
+  // render property cards
+  function renderListings() {
+    const filteredProps = filterProperties();
+    if (filteredProps.length === 0) {
+      gridContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:60px; background:#fff; border-radius:28px;">
+        <i class="fas fa-search" style="font-size:48px; color:#ccc;"></i>
+        <h3 style="margin-top:16px;">No stays match your criteria</h3>
+        <p style="color:gray;">Try adjusting location, guests, or category.</p>
+        </div>`;
+      return;
+    }
+    
+    gridContainer.innerHTML = filteredProps.map(prop => `
+      <div class="property-card" data-id="${prop.id}">
+        <div class="card-img" style="background-image: url('${prop.image}');">
+          <div class="price-badge">$${prop.pricePerNight} <span style="font-weight:normal;">/ night</span></div>
+        </div>
+        <div class="card-info">
+          <div class="card-title">${prop.title}</div>
+          <div class="card-location"><i class="fas fa-map-pin"></i> ${prop.location}</div>
+          <div class="rating"><i class="fas fa-star"></i> ${prop.rating} · ✨ Superhost</div>
+          <button class="book-sim-btn" data-id="${prop.id}" data-title="${prop.title.replace(/'/g, "\\'")}" data-price="${prop.pricePerNight}">📅 Simulate booking</button>
+        </div>
+      </div>
+    `).join('');
+    
+    // attach event listeners to all "Simulate booking" buttons
+    document.querySelectorAll('.book-sim-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const propertyId = parseInt(btn.getAttribute('data-id'));
+        const propertyTitle = btn.getAttribute('data-title');
+        const price = btn.getAttribute('data-price');
+        // gather check-in/out from UI to show realistic simulation message
+        const checkin = document.getElementById("checkinInput").value;
+        const checkout = document.getElementById("checkoutInput").value;
+        const guestsCount = document.getElementById("guestsSelect").options[document.getElementById("guestsSelect").selectedIndex]?.text || "2 guests";
+        let nights = 1;
+        if (checkin && checkout) {
+          const diffTime = Math.abs(new Date(checkout) - new Date(checkin));
+          nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+        }
+        const total = price * nights;
+        modalMessageSpan.innerText = `${propertyTitle} · ${nights} night(s) · $${total} total (${guestsCount})`;
+        modal.style.display = "flex";
+      });
+    });
+  }
+
+  // update active chip UI
+  function setActiveChip(selectedType) {
+    chips.forEach(chip => {
+      const chipType = chip.getAttribute("data-type");
+      if ((selectedType === "all" && chipType === "all") || chipType === selectedType) {
+        chip.classList.add("active");
+      } else {
+        chip.classList.remove("active");
+      }
+    });
+  }
+
+  // event handlers for chips
+  chips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      const type = chip.getAttribute("data-type");
+      currentFilterType = type;
+      setActiveChip(currentFilterType);
+      renderListings();
+    });
+  });
+
+  // search button: update location + guests then re-render
+  function performSearch() {
+    let rawLocation = locationInput.value.trim();
+    if (rawLocation === "") rawLocation = "Anywhere";
+    currentLocationQuery = rawLocation;
+    const guestsVal = parseInt(guestsSelect.value, 10);
+    currentGuests = isNaN(guestsVal) ? 2 : guestsVal;
+    renderListings();
+  }
+
+  searchBtn.addEventListener("click", () => {
+    performSearch();
+  });
+
+  // additional realtime optional: guests change via select? we can also re-render, but search button triggers
+  // for better UX: also update when pressing Enter on location field
+  locationInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") performSearch();
+  });
+
+  // close modal
+  function closeModal() {
+    modal.style.display = "none";
+  }
+  closeModalBtn.addEventListener("click", closeModal);
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // initialize demo with default values (date presets are already set in html)
+  function init() {
+    // set default guests
+    currentGuests = 2;
+    currentLocationQuery = locationInput.value.trim() || "Downtown";
+    currentFilterType = "all";
+    setActiveChip("all");
+    renderListings();
+  }
+  
+  init();
+
+  // small tweak: dynamic date validation (prevent checkout before checkin)
+  const checkinEl = document.getElementById("checkinInput");
+  const checkoutEl = document.getElementById("checkoutInput");
+  function updateCheckoutMin() {
+    if (checkinEl.value) {
+      checkoutEl.min = checkinEl.value;
+      if (checkoutEl.value < checkinEl.value) {
+        checkoutEl.value = checkinEl.value;
+      }
+    }
+  }
+  checkinEl.addEventListener("change", updateCheckoutMin);
+  updateCheckoutMin();
+</script>
+</body>
+</html>
